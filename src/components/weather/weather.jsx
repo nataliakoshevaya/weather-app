@@ -2,10 +2,9 @@ import axios from "axios";
 import React, { Component } from "react";
 import CurrentWeatherDay from "./current-weather-day/current-weather-day";
 import DayCard from "./day-card/day-card";
-import style from './weather.module.css'
-import apiConfig from '../../apiKey';
+import style from './weather.module.css';
 
-
+const apiConfig = process.env.REACT_APP_API_KEY;
 class Weather extends Component {
     componentDidMount() {
         axios
@@ -44,7 +43,8 @@ class Weather extends Component {
 
         let day = getWeekDay(d);
         
-        let dailyData = this.props.weather.list.filter(reading => reading.dt_txt.includes("18:00:00")).slice(1);
+        let dailyData = this.props.weather.list
+        // .filter(reading => reading.dt_txt.includes("18:00:00")).slice(1);
 
         // let forecast = this.props.weather.list.forEach(d => {
         //     let date = new Date(d.dt * 1000);
@@ -59,7 +59,7 @@ class Weather extends Component {
         //                     day={name} />
         //   })
         
-        let filterData = dailyData.map(day => {
+        let filterData = dailyData.forEach(day => {
             let dayData = day.dt_txt.split(' ');
             let d = new Date(dayData);
             let data = getWeekDay(d);

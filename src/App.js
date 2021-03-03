@@ -8,10 +8,11 @@ function App() {
        <div className="container">
           <SearchPanel />
           <WeatherItemContainer />
- 
+          
         </div>
     </div>
   );
 }
+
 
 export default App;
