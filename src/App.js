@@ -1,17 +1,21 @@
 import './App.css';
-import SearchPanel from './components/serach-panel/search-panel';
+import SearchPanel from './components/search-panel/search-panel';
 import WeatherItemContainer from './components/weather/weather-container';
+import {Component} from 'react'
 
-function App() {
+
+
+class App extends  Component {
+ render() {
   return (
     <div className="App">
        <div className="container">
           <SearchPanel />
           <WeatherItemContainer />
-          
         </div>
     </div>
   );
+ }
 }
 
 

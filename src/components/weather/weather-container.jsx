@@ -4,7 +4,8 @@ import Weather from "./weather";
 
 let mapStateToProp = (state) => {
     return {
-        weather: state.weather
+        weather: state.weather,
+        city: state.city
     }
 };
 

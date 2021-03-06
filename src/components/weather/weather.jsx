@@ -4,11 +4,11 @@ import CurrentWeatherDay from "./current-weather-day/current-weather-day";
 import DayCard from "./day-card/day-card";
 import style from './weather.module.css';
 
-const apiConfig = process.env.REACT_APP_API_KEY;
+const apiConfig = '';
 class Weather extends Component {
     componentDidMount() {
         axios
-            .get(`https://api.openweathermap.org/data/2.5/forecast?q=Kharkiv&appid=${apiConfig}&units=metric`)
+            .get(`https://api.openweathermap.org/data/2.5/forecast?q=${this.props.city}&appid=${apiConfig}&units=metric`)
             .then(response => {
                 this.props.setWeather(response.data)
         })
@@ -43,23 +43,9 @@ class Weather extends Component {
 
         let day = getWeekDay(d);
         
-        let dailyData = this.props.weather.list
-        // .filter(reading => reading.dt_txt.includes("18:00:00")).slice(1);
-
-        // let forecast = this.props.weather.list.forEach(d => {
-        //     let date = new Date(d.dt * 1000);
-        //     let days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
-        //     let name = days[date.getDay()];
-        //     let iconCode = d.weather[0].id;
-        //     let iconUrl = `owf owf-${iconCode} owf-5x`;
-
-        //     console.log(iconUrl)
-        //     return <DayCard 
-        //                     icon={iconUrl}
-        //                     day={name} />
-        //   })
+        let dailyData = this.props.weather.list.filter(reading => reading.dt_txt.includes("18:00:00")).slice(1);
         
-        let filterData = dailyData.forEach(day => {
+        let filterData = dailyData.map(day => {
             let dayData = day.dt_txt.split(' ');
             let d = new Date(dayData);
             let data = getWeekDay(d);
