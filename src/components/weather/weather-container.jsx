@@ -5,19 +5,12 @@ import Weather from "./weather";
 let mapStateToProp = (state) => {
     return {
         weather: state.weather,
-        city: state.city
+        city: state.city, 
+        apiWeatherKey: state.apiWeatherKey
     }
 };
 
-let mapDispatchToProps = (dispatch) => {
-    return {
-        setWeather: (weather) => {
-            dispatch(setWeatherAC(weather))
-        }
-    }
-}
-
-const WeatherContainer = connect(mapStateToProp, mapDispatchToProps)(Weather);
+const WeatherContainer = connect(mapStateToProp)(Weather);
 
 export default WeatherContainer;
 

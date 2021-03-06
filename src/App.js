@@ -1,7 +1,7 @@
 import './App.css';
 import SearchPanel from './components/search-panel/search-panel';
-import WeatherItemContainer from './components/weather/weather-container';
-import {Component} from 'react'
+import {Component} from 'react';
+import WeatherContainer from './components/weather/weather-container';
 
 
 
@@ -11,7 +11,7 @@ class App extends  Component {
     <div className="App">
        <div className="container">
           <SearchPanel />
-          <WeatherItemContainer />
+          <WeatherContainer />
         </div>
     </div>
   );

@@ -4,17 +4,12 @@ import CurrentWeatherDay from "./current-weather-day/current-weather-day";
 import DayCard from "./day-card/day-card";
 import style from './weather.module.css';
 
-const apiConfig = '';
 class Weather extends Component {
-    componentDidMount() {
-        axios
-            .get(`https://api.openweathermap.org/data/2.5/forecast?q=${this.props.city}&appid=${apiConfig}&units=metric`)
-            .then(response => {
-                this.props.setWeather(response.data)
-        })
-    };
-
     render() {
+        if(this.props.apiWeatherKey === '') {
+            return <span>Please enter your API key</span>
+        }
+
         if (!this.props.weather.list) {
             return <span>Loading...</span>;
         }
@@ -57,7 +52,7 @@ class Weather extends Component {
                             description={day.weather[0].description}
                             icon={iconUrl}/>
         })
-
+        
         return (
             <div className={style.wrapper}>
                 <CurrentWeatherDay

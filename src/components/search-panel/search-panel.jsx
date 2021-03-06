@@ -2,22 +2,28 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { getCityAC, setWeatherAC } from '../../redux/weatherReducer';
+import { getCityAC, setWeatherAC, setWeatherApiKeyAC } from '../../redux/weatherReducer';
 import axios from 'axios';
-const apiConfig = process.env.REACT_APP_API_KEY;
 
 class SearchPanel extends Component {
     getWeather = (e) => {
         e.preventDefault();
+        const text = e.target.elements.city.value;
 
-        const city = e.target.elements.city.value;
-        this.props.setCity(city);
-
+        if(!this.props.apiWeatherKey) {
+            this.props.setKey(text)
+        }
+        
+        this.props.setCity(text);
+        
         axios
-            .get(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiConfig}&units=metric`)
+            .get(`https://api.openweathermap.org/data/2.5/forecast?q=${this.props.city}&appid=${this.props.apiWeatherKey}&units=metric`)
             .then(response => {
                 this.props.setWeather(response.data)
         })
+       
+        e.target.elements.city.value = ''
+
     }
 
     render() {
@@ -42,7 +48,8 @@ class SearchPanel extends Component {
 let mapStateToProp = (state) => {
     return {
         weather: state.weather,
-        city: state.city
+        city: state.city,
+        apiWeatherKey: state.apiWeatherKey
     }
 }
 
@@ -53,6 +60,9 @@ let mapDispatchToProps = (dispatch) => {
        },
        setCity: (city) =>{
         dispatch(getCityAC(city))
+       },
+       setKey: (key) => {
+           dispatch(setWeatherApiKeyAC(key))
        }
     }
 }
