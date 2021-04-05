@@ -1,5 +1,3 @@
-import style from './day-card.module.css'
-
 const DayCard = (props) => {
     return (
         <div className="col mb-4">

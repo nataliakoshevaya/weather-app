@@ -2,30 +2,35 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { getCityAC, setWeatherAC, setWeatherApiKeyAC } from '../../redux/weatherReducer';
+import { getCity, setWeather, isFetching} from '../../redux/weatherReducer';
+import {getSearchError} from '../../redux/errorReducer'
 import axios from 'axios';
 
 class SearchPanel extends Component {
-    getWeather = (e) => {
-        e.preventDefault();
-        const text = e.target.elements.city.value;
-
-        if(!this.props.apiWeatherKey) {
-            this.props.setKey(text)
-        }
+    getCityForState = (e) => {
+        if(e.target.value === '') { console.log(this.props) }
         
-        this.props.setCity(text);
-        
-        axios
-            .get(`https://api.openweathermap.org/data/2.5/forecast?q=${this.props.city}&appid=${this.props.apiWeatherKey}&units=metric`)
-            .then(response => {
-                this.props.setWeather(response.data)
-        })
-       
-        e.target.elements.city.value = ''
-
+        let city = e.target.value
+        this.props.getCity(city)
     }
 
+    getWeather = (e) => {
+        e.preventDefault();
+            this.props.isFetching(false)
+            axios
+                .get(`https://api.openweathermap.org/data/2.5/forecast?q=${this.props.city}&appid=6e215ba5ef08bdf570de5cd7304cd8cf&units=metric`)
+                .then(response => {
+                        this.props.isFetching(true);
+                        this.props.setWeather(response.data);
+                })
+                .catch((error) => {
+                    console.log('Error', error.message);
+                    this.props.getSearchError(true)
+                    setTimeout(() => this.props.getSearchError(false), 2000)
+                })
+    };
+ 
+    
     render() {
         return (
             <div className="mb-3">
@@ -34,6 +39,8 @@ class SearchPanel extends Component {
                     <input 
                             type="text"  
                             name="city"
+                            onChange={this.getCityForState}
+                            value = {this.props.city}
                             className="form-control" 
                             placeholder="Search for a city..." 
                             />
@@ -47,26 +54,14 @@ class SearchPanel extends Component {
 
 let mapStateToProp = (state) => {
     return {
-        weather: state.weather,
-        city: state.city,
-        apiWeatherKey: state.apiWeatherKey
+        weather: state.weather.weather,
+        city: state.weather.city,
+        searchError: state.error.searchError
     }
 }
 
-let mapDispatchToProps = (dispatch) => {
-    return {
-       setWeather: (weather) => {
-           dispatch(setWeatherAC(weather))
-       },
-       setCity: (city) =>{
-        dispatch(getCityAC(city))
-       },
-       setKey: (key) => {
-           dispatch(setWeatherApiKeyAC(key))
-       }
-    }
-}
 
-const SearchPanelContainer = connect(mapStateToProp, mapDispatchToProps)(SearchPanel);
+
+const SearchPanelContainer = connect(mapStateToProp, {getCity, setWeather, isFetching, getSearchError})(SearchPanel);
 
 export default SearchPanelContainer;

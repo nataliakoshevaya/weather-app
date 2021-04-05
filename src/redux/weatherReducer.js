@@ -1,11 +1,11 @@
 const SET_WEATHER = "SET-WEATHER";
 const SET_CITY = "SET-CITY";
-const SET_API_KEY = 'SET-API-KEY';
+const SET_FETCHING_TOGGLE = 'SET_FETCHING_TOGGLE';
 
 const InitialState = {
     weather: [],
-    city: 'kharkiv',
-    apiWeatherKey: ''
+    city: '',
+    isFetching: false
 };
 
 
@@ -14,40 +14,41 @@ const weatherReducer = (state = InitialState, action) => {
         case "SET-WEATHER":
           return {
               ...state,
-              weather: action.weather
+              weather: action.weather,
+              city:''
           }
         case SET_CITY: 
          return {
              ...state,
             city: action.currentCity
         }  
-        case SET_API_KEY: 
-          return {
-              ...state,
-              apiWeatherKey: action.apiKey
-          }
+        case SET_FETCHING_TOGGLE:
+            return {
+                ...state,
+                isFetching: action.toggle
+        }  
         default: return state
     }
 };
 
-export const setWeatherAC = (weather) => {
+export const setWeather = (weather) => {
     return {
         type: SET_WEATHER,
         weather
     }
 }
 
-export const getCityAC = (currentCity) => {
+export const getCity = (currentCity) => {
     return {
         type: SET_CITY,
         currentCity
     }
 }
 
-export const setWeatherApiKeyAC = (apiKey) => {
+export const isFetching = (toggle) => {
     return {
-        type: SET_API_KEY,
-        apiKey
+        type: SET_FETCHING_TOGGLE,
+        toggle
     }
 }
 

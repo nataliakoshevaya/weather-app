@@ -1,16 +1,16 @@
 import { connect } from "react-redux";
-import { setWeatherAC } from "../../redux/weatherReducer";
 import Weather from "./weather";
+import {getSearchError} from '../../redux/errorReducer'
 
-let mapStateToProp = (state) => {
-    return {
-        weather: state.weather,
-        city: state.city, 
-        apiWeatherKey: state.apiWeatherKey
-    }
-};
 
-const WeatherContainer = connect(mapStateToProp)(Weather);
+let mapStateToProp = (state) => ({
+    weather: state.weather.weather,
+    city: state.weather.city,
+    isFetching: state.weather.isFetching,
+    searchError: state.error.searchError
+})
+
+const WeatherContainer = connect(mapStateToProp, {getSearchError})(Weather);
 
 export default WeatherContainer;
 
